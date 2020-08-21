@@ -142,6 +142,16 @@ module OneLogin
           }
         end
 
+        # Customized by Brandon Kish for Schoolcraft College 2020-08-21
+        # https://techcommunity.microsoft.com/t5/azure-active-directory-identity/using-azure-ad-to-land-users-on-their-custom-login-page-from/ba-p/243900
+        # We're trying to skip the first Micrsoft login page by providing a domain hint
+        domain_hint_scope = root.add_element "samlp:Scoping"
+        domain_hint_list  = domain_hint_scope.add_element "samlp:IDPList"
+        domain_hint_entry = domain_hint_list.add_element "samlp:IDPEntry", {
+          "ProviderID" => "https://schoolcraft.edu",
+          "Name" => "schoolcraft.edu"
+        }
+
         if settings.authn_context || settings.authn_context_decl_ref
 
           if settings.authn_context_comparison != nil
